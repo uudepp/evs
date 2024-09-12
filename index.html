@@ -48,10 +48,12 @@
         
         .textbox {
             height: 20px;
+            
         }
         
         .textbox2 {
-            height: 40px;
+            height: 43px;
+            overflow: hidden; /* Hide overflow */
         }
 
         .textboxlong {
@@ -63,6 +65,7 @@
             width: 100px;
             text-align: right;
             margin-right: 10px;
+            vertical-align: top; /* Align label to the top */
         }
         
 
@@ -119,7 +122,7 @@
                     <input type="text" id="hora_inicio" class="textbox" required><br>
                     <label for="hora_fin">Hora fin:</label>
                     <input type="text" id="hora_fin" class="textbox" required><br>
-                    <label for="indicaciones">Indicaciones adicionales:</label><br>
+                    <label for="indicaciones">Indicaciones adicionales:</label>
                     <textarea id="indicaciones" class="textboxlong" required></textarea>
             </div>
 
@@ -157,3 +160,4 @@
 
 </body>
 </html>
+
