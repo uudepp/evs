@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            font-size: 15px;
+            background-color: black;
+            color: white;
+            font-weight: bold; /* This makes the text bold */
+        }
+        .container {
+            max-width: 95%;
+            margin: 0 auto;
+            text-align: left; /* Aligning all content except the clock to the left */
+        }
+        .clock-container {
+            text-align: center; /* Aligning clock to center */
+        }
+        .clock {
+            font-size: 45px;
+            margin-bottom: 5px;
+            font-weight: normal; /* This makes the text bold */
+        }
+        .content {
+            display: flex;
+        }
+        .textbox, .textboxlong, .textbox2 {
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 0px solid #ccc;
+            outline: none;
+            text-align: left;
+            font-size: 15px;
+            display: inline-block;
+            background-color: black;
+            color: white;
+            font-weight: normal;
+        }
+        
+        .textbox {
+            width: 350px;
+            height: 20px;
+        }
+
+        .textboxlong {
+            width: 350px;
+            height: 150px;
+        }
+        
+        label {
+            display: inline-block;
+            width: 100px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        
+
+
+        .picture {
+            height: 100%; /* Maintain the aspect ratio */
+            width: auto;
+            display: block;
+            margin: 0px auto;
+        }
+                /* Make sure the form fields and picture split the screen */
+        .split-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .left-content{
+            flex: 1;
+        }
+        
+        .right-content {
+            flex: 3;
+        }
+
+        .resizable-container {
+            resize: both; /* Allow resizing both horizontally and vertically */
+            overflow: auto; /* Add scrollbars if needed */
+        }
+
+        .resizable-image {
+            width: 100%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="clock-container">
+            <div class="clock" id="clock"></div>
+        </div>
+        <div class="split-container">
+            <div class="left-content">
+                    <label for="curso">Curso:</label>
+                    <input type="text" id="curso" class="textbox" required><br>
+                    <label for="profesor">Profesor(a):</label>
+                    <input type="text" id="profesor" class="textbox" required><br>
+                    <label for="evaluacion">Evaluación:</label>
+                    <input type="text" id="evaluacion" class="textbox" required><br>
+                    <label for="fecha">Fecha:</label>  
+                    <input type="text" id="fecha" class="textbox" required><br>
+                    <!--    <div id="current-date" class="textbox"></div> <br>    -->
+                    <label for="hora_inicio">Hora inicio:</label>
+                    <input type="text" id="hora_inicio" class="textbox" required><br>
+                    <label for="hora_fin">Hora fin:</label>
+                    <input type="text" id="hora_fin" class="textbox" required><br>
+                    <label for="indicaciones">Indicaciones adicionales:</label><br>
+                    <textarea id="indicaciones" class="textboxlong" required></textarea>
+            </div>
+
+            <div class="right-content">
+                    <div class="resizable-container">
+                        <img src="./placeholder.png" alt="Placeholder Image" class="picture">
+                    </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function updateClock() {
+        var now = new Date();
+        var clock = document.getElementById('clock');
+        var hours = ('0' + now.getHours()).slice(-2); // Ensuring two digits for hours
+        var minutes = ('0' + now.getMinutes()).slice(-2); // Ensuring two digits for minutes
+        var seconds = ('0' + now.getSeconds()).slice(-2); // Ensuring two digits for seconds
+        clock.textContent = hours + ':' + minutes + ':' + seconds;
+    }
+    setInterval(updateClock, 1000);
+    </script>
+    
+    
+    <script>
+      // Get current date
+      const today = new Date();
+      // Format date as dd/mm/yyyy
+      const formattedDate = today.getDate().toString().padStart(2, '0') + '/' +
+                            (today.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                            today.getFullYear();
+      // Display the date in the span element
+      document.getElementById('current-date').textContent = formattedDate;
+    </script>
+
+</body>
+</html>
