@@ -43,15 +43,14 @@
             background-color: black;
             color: white;
             font-weight: normal;
+            width: 250px;
         }
         
         .textbox {
-            width: 350px;
             height: 20px;
         }
 
         .textboxlong {
-            width: 350px;
             height: 150px;
         }
         
@@ -65,7 +64,7 @@
 
 
         .picture {
-            height: 100%; /* Maintain the aspect ratio */
+            height: 85%; /* Maintain the aspect ratio */
             width: auto;
             display: block;
             margin: 0px auto;
@@ -104,7 +103,7 @@
         <div class="split-container">
             <div class="left-content">
                     <label for="curso">Curso:</label>
-                    <input type="text" id="curso" class="textbox" required><br>
+                    <textarea type="text" id="curso" class="textbox" required></textarea><br>
                     <label for="profesor">Profesor(a):</label>
                     <input type="text" id="profesor" class="textbox" required><br>
                     <label for="evaluacion">Evaluación:</label>
@@ -124,7 +123,6 @@
                     <div class="resizable-container">
                         <img src="./placeholder.png" alt="Placeholder Image" class="picture">
                     </div>
-
             </div>
         </div>
     </div>
