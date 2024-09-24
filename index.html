@@ -3,161 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Details</title>
+    <title>Resizable Divider with Editable Table</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            font-size: 18px;
-            background-color: black;
-            color: white;
-            font-weight: bold; /* This makes the text bold */
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        body, html {
+            height: 100%;
+            background-color: black; /* Set the background color to black */
+            color: white; /* Set text color to white for better visibility */
+        }
+
         .container {
-            max-width: 95%;
-            margin: 0 auto;
-            text-align: left; /* Aligning all content except the clock to the left */
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
-        .clock-container {
+
+        .top-section {
+            background-color: black; /* Full black background for top section */
+            padding: 20px;
+            flex: none; /* Allow height to be determined by content */
             text-align: center; /* Aligning clock to center */
         }
+
         .clock {
-            font-size: 55px;
-            margin-bottom: 5px;
-            font-weight: normal; /* This makes the text bold */
+            font-size: 50px; /* Adjust the size as needed */
+            font-weight: bold; /* Makes the text bold */
+            color: white; /* Change the clock color to white */
         }
-        .content {
+
+        .bottom-container {
             display: flex;
-        }
-        .textbox, .textboxlong, .textbox2 {
-            font-family: Arial, sans-serif;
-            padding: 10px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            border: 0px solid #ccc;
-            outline: none;
-            text-align: left;
-            font-size: 18px;
-            display: inline-block;
-            background-color: black;
-            color: white;
-            font-weight: normal;
-        }
-        
-        .textbox {
-            height: 20px;
-            width: 250px;
-        }
-        
-        .textbox2 {
-            height: 43px;
-            width: 250px;
-            overflow: hidden; /* Hide overflow */
+            flex: 2;
+            position: relative;
         }
 
-        .textboxlong {
-            height: 150px;
-            width: 400px;
+        .left-section, .right-section {
+            padding: 20px;
+            overflow: auto;
         }
-        
-        label {
-            display: inline-block;
-            width: 150px;
-            text-align: right;
-            margin-right: 10px;
-            vertical-align: top; /* Align label to the top */
-        }
-        
 
-
-        .picture {
-            height: 100%; /* Maintain the aspect ratio */
-            width: auto;
-            display: block;
-            margin: 0px auto;
+        .left-section {
+            background-color: black; /* Full black background for left section */
+            flex-basis: 25%; /* Left section takes 1 part */
+            flex-grow: 0;
         }
-                /* Make sure the form fields and picture split the screen */
-        .split-container {
+
+        .right-section {
+            background-color: black; /* Full black background for right section */
+            flex-basis: 75%; /* Right section takes 3 parts */
+            flex-grow: 0;
             display: flex;
-            justify-content: space-between;
-        }
-        
-        .left-content{
-            flex:2;
-        }
-        
-        .right-content {
-            flex: 3;
+            justify-content: center;
+            align-items: center;
         }
 
-        .resizable-container {
-            resize: both; /* Allow resizing both horizontally and vertically */
-            overflow: auto; /* Add scrollbars if needed */
+        .divider {
+            width: 4px;
+            background-color: #333; /* Keep divider color for contrast */
+            cursor: ew-resize;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 25%; /* Adjust to match the left section */
+            z-index: 1;
         }
 
-        .resizable-image {
+        table {
             width: 100%;
+            border-collapse: collapse;
         }
 
+        td {
+            padding: 10px;
+            border: 1px solid #222; /* Almost black border color */
+            vertical-align: top;
+            color: white; /* Set text color to white in table cells */
+        }
+
+        td:nth-child(2) {
+            width: 70%;
+        }
+
+        td[contenteditable="true"] {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+
+        /* Styles for the left column */
+        .left-section td:not(:last-child) {
+            text-align: right; /* Aligns text to the left */
+            font-weight: bold; /* Makes the text bold */
+        }
+
+        /* Specific styles for the second to last row */
+        .bold-left {
+            font-weight: bold; /* Makes text bold */
+        }
+
+        /* Specific styles for the last row */
+        .not-bold-left {
+            font-weight: normal; /* Ensures text is not bold */
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
     </style>
 </head>
-
 <body>
-    <div class="container">
+
+<div class="container">
+    <!-- Top Section -->
+    <div class="top-section">
         <div class="clock-container">
             <div class="clock" id="clock"></div>
         </div>
-        <div class="split-container">
-            <div class="left-content">
-                    <label for="curso">Curso:</label>
-                    <textarea type="text" id="curso" class="textbox2" required></textarea><br>
-                    <label for="profesor">Profesor(a):</label>
-                    <input type="text" id="profesor" class="textbox" required><br>
-                    <label for="evaluacion">Evaluación:</label>
-                    <input type="text" id="evaluacion" class="textbox" required><br>
-                    <label for="fecha">Fecha:</label>  
-                    <input type="text" id="fecha" class="textbox" required><br>
-                    <!--    <div id="current-date" class="textbox"></div> <br>    -->
-                    <label for="hora_inicio">Hora de inicio:</label>
-                    <input type="text" id="hora_inicio" class="textbox" required><br>
-                    <label for="hora_fin">Hora de fin:</label>
-                    <input type="text" id="hora_fin" class="textbox" required><br>
-                    <label for="indicaciones">Indicaciones adicionales:</label>
-                    <textarea id="indicaciones" class="textboxlong" required></textarea>
-            </div>
-
-            <div class="right-content">
-                    <div class="resizable-container">
-                        <img src="./placeholder.png" alt="Placeholder Image" class="picture">
-                    </div>
-            </div>
-        </div>
     </div>
 
-    <script>
-    function updateClock() {
-        var now = new Date();
-        var clock = document.getElementById('clock');
-        var hours = ('0' + now.getHours()).slice(-2); // Ensuring two digits for hours
-        var minutes = ('0' + now.getMinutes()).slice(-2); // Ensuring two digits for minutes
-        var seconds = ('0' + now.getSeconds()).slice(-2); // Ensuring two digits for seconds
-        clock.textContent = hours + ':' + minutes + ':' + seconds;
-    }
-    setInterval(updateClock, 1000);
-    </script>
-    
-    
-    <script>
-      // Get current date
-      const today = new Date();
-      // Format date as dd/mm/yyyy
-      const formattedDate = today.getDate().toString().padStart(2, '0') + '/' +
-                            (today.getMonth() + 1).toString().padStart(2, '0') + '/' +
-                            today.getFullYear();
-      // Display the date in the span element
-      document.getElementById('current-date').textContent = formattedDate;
-    </script>
+    <!-- Resizable Bottom Section -->
+    <div class="bottom-container">
+        <!-- Left Section -->
+        <div class="left-section">
+            <table>
+                <tr>
+                    <td>Curso: </td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td>Profesor(a):</td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td>Evaluación:</td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td>Fecha:</td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td>Hora inicio:</td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td>Hora fin:</td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td class="bold-left" colspan="2">Indicaciones adicionales:</td>
+                </tr>
+                <tr>
+                    <td class="not-bold-left" contenteditable="true" colspan="2"></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Resizable Divider -->
+        <div class="divider"></div>
+
+        <!-- Right Section -->
+        <div class="right-section">
+            <img src="./placeholder.png" alt="Placeholder Image" class="picture">
+        </div>
+    </div>
+</div>
+
+<!-- Embedded JavaScript -->
+<script>
+    const divider = document.querySelector('.divider');
+    const leftSection = document.querySelector('.left-section');
+    const rightSection = document.querySelector('.right-section');
+
+    let isResizing = false;
+
+    divider.addEventListener('mousedown', (e) => {
+        isResizing = true;
+        document.body.style.cursor = 'ew-resize';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isResizing) return;
+
+        const container = document.querySelector('.bottom-container');
+        const containerWidth = container.offsetWidth;
+        const leftWidth = e.clientX / containerWidth * 100;
+        const rightWidth = 100 - leftWidth;
+
+        // Set the width for both sections
+        leftSection.style.flexBasis = `${leftWidth}%`;
+        rightSection.style.flexBasis = `${rightWidth}%`;
+
+        // Move the divider
+        divider.style.left = `${leftWidth}%`;
+    });
+
+    document.addEventListener('mouseup', () => {
+        isResizing = false;
+        document.body.style.cursor = 'default';
+    });
+</script>
+
+<script>
+function updateClock() {
+    var now = new Date();
+    var clock = document.getElementById('clock');
+    var hours = ('0' + now.getHours()).slice(-2); // Ensuring two digits for hours
+    var minutes = ('0' + now.getMinutes()).slice(-2); // Ensuring two digits for minutes
+    var seconds = ('0' + now.getSeconds()).slice(-2); // Ensuring two digits for seconds
+    clock.textContent = hours + ':' + minutes + ':' + seconds;
+}
+setInterval(updateClock, 1000);
+</script>
 
 </body>
 </html>
