@@ -12,6 +12,7 @@
         }
 
         body, html {
+            font-size: 20px; /* Starting font size */
             height: 100%;
             background-color: black; /* Set the background color to black */
             color: white; /* Set text color to white for better visibility */
@@ -31,7 +32,7 @@
         }
 
         .clock {
-            font-size: 50px; /* Adjust the size as needed */
+            font-size: 3em; /* Adjust the size as needed */
             font-weight: bold; /* Makes the text bold */
             color: white; /* Change the clock color to white */
         }
@@ -45,6 +46,7 @@
         .left-section, .right-section {
             padding: 20px;
             overflow: auto;
+            position: relative; /* Set position to relative for absolute positioning of buttons */
         }
 
         .left-section {
@@ -115,6 +117,27 @@
             max-width: 100%;
             max-height: 100%;
         }
+
+        .font-size-controls {
+            position: absolute; /* Position it absolutely within the left section */
+            bottom: 20px; /* Distance from the bottom */
+            left: 20px; /* Distance from the left */
+            display: flex; /* Use flexbox to align buttons */
+            gap: 10px; /* Space between buttons */
+        }
+
+        button {
+            padding: 10px;
+            background-color: #333; /* Button background color */
+            border: none;
+            color: white; /* Button text color */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: inherit; /* Ensure button text inherits font size */
+        }
+
+        button:hover {
+            background-color: #555; /* Darker shade on hover */
+        }
     </style>
 </head>
 <body>
@@ -163,6 +186,12 @@
                     <td class="not-bold-left" contenteditable="true" colspan="2"></td>
                 </tr>
             </table>
+
+            <!-- Font Size Control Buttons -->
+            <div class="font-size-controls">
+                <button id="decrease-font">-</button>
+                <button id="increase-font">+</button>
+            </div>
         </div>
 
         <!-- Resizable Divider -->
@@ -208,6 +237,21 @@
         isResizing = false;
         document.body.style.cursor = 'default';
     });
+
+    // Font size adjustment
+    const decreaseFontButton = document.getElementById('decrease-font');
+    const increaseFontButton = document.getElementById('increase-font');
+    let currentFontSize = 20; // Starting font size in pixels
+
+    decreaseFontButton.addEventListener('click', () => {
+        currentFontSize = Math.max(currentFontSize - 2, 10); // Minimum font size of 10px
+        document.body.style.fontSize = currentFontSize + 'px';
+    });
+
+    increaseFontButton.addEventListener('click', () => {
+        currentFontSize += 2; // Increase font size by 2px
+        document.body.style.fontSize = currentFontSize + 'px';
+    });
 </script>
 
 <script>
@@ -224,3 +268,4 @@ setInterval(updateClock, 1000);
 
 </body>
 </html>
+
