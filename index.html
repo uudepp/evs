@@ -21,30 +21,31 @@
         .container {
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            height: 98vh;
         }
-
-        .top-section {
-            background-color: black; /* Full black background for top section */
-            padding: 20px;
-            flex: none; /* Allow height to be determined by content */
-            text-align: center; /* Aligning clock to center */
-        }
-
+        
         .clock {
             font-size: 3em; /* Adjust the size as needed */
             font-weight: bold; /* Makes the text bold */
             color: white; /* Change the clock color to white */
         }
 
+        .top-section {
+            background-color: black; /* Full black background for top section */
+            padding: 5px;
+            flex: none; /* Allow height to be determined by content */
+            text-align: center; /* Aligning clock to center */
+        }
+
         .bottom-container {
             display: flex;
-            flex: 2;
+            flex: 1; /* Allow the bottom container to fill the remaining space */
             position: relative;
+            overflow: hidden; /* Ensure contents don't overflow */
         }
 
         .left-section, .right-section {
-            padding: 20px;
+            padding: 5px;
             overflow: auto;
             position: relative; /* Set position to relative for absolute positioning of buttons */
         }
@@ -62,6 +63,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100%; /* Set height to 100% */
         }
 
         .divider {
@@ -199,7 +201,7 @@
 
         <!-- Right Section -->
         <div class="right-section">
-            <img src="./placeholder.png" alt="Placeholder Image" class="picture">
+            <img src="./placeholder_2.png" alt="Placeholder Image" class="picture">
         </div>
     </div>
 </div>
@@ -209,6 +211,8 @@
     const divider = document.querySelector('.divider');
     const leftSection = document.querySelector('.left-section');
     const rightSection = document.querySelector('.right-section');
+    const bottomContainer = document.querySelector('.bottom-container');
+    const topSection = document.querySelector('.top-section');
 
     let isResizing = false;
 
@@ -252,20 +256,28 @@
         currentFontSize += 2; // Increase font size by 2px
         document.body.style.fontSize = currentFontSize + 'px';
     });
-</script>
 
-<script>
-function updateClock() {
-    var now = new Date();
-    var clock = document.getElementById('clock');
-    var hours = ('0' + now.getHours()).slice(-2); // Ensuring two digits for hours
-    var minutes = ('0' + now.getMinutes()).slice(-2); // Ensuring two digits for minutes
-    var seconds = ('0' + now.getSeconds()).slice(-2); // Ensuring two digits for seconds
-    clock.textContent = hours + ':' + minutes + ':' + seconds;
-}
-setInterval(updateClock, 1000);
+    // Function to update the height of the bottom container
+    function updateBottomContainerHeight() {
+        const topSectionHeight = topSection.offsetHeight;
+        bottomContainer.style.maxHeight = `calc(98vh - ${topSectionHeight}px)`;
+    }
+
+    // Initial update and listen for window resize
+    updateBottomContainerHeight();
+    window.addEventListener('resize', updateBottomContainerHeight);
+
+    // Clock update function
+    function updateClock() {
+        var now = new Date();
+        var clock = document.getElementById('clock');
+        var hours = ('0' + now.getHours()).slice(-2); // Ensuring two digits for hours
+        var minutes = ('0' + now.getMinutes()).slice(-2); // Ensuring two digits for minutes
+        var seconds = ('0' + now.getSeconds()).slice(-2); // Ensuring two digits for seconds
+        clock.textContent = hours + ':' + minutes + ':' + seconds;
+    }
+    setInterval(updateClock, 1000);
 </script>
 
 </body>
 </html>
-
