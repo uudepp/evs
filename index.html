@@ -140,6 +140,13 @@
         button:hover {
             background-color: #555; /* Darker shade on hover */
         }
+        
+        .latex {
+            display: inline-block;
+            vertical-align: middle; /* Aligns with text */
+            filter: invert(1); /* Invert colors */
+        }
+
     </style>
 </head>
 <body>
@@ -185,7 +192,7 @@
                     <td class="bold-left" colspan="2">Indicaciones adicionales:</td>
                 </tr>
                 <tr>
-                    <td class="not-bold-left" contenteditable="true" colspan="2"></td>
+                    <td id="inputBox" class="not-bold-left" contenteditable="true" colspan="2"></td>
                 </tr>
             </table>
 
@@ -277,6 +284,63 @@
         clock.textContent = hours + ':' + minutes + ':' + seconds;
     }
     setInterval(updateClock, 1000);
+    
+    
+    
+    
+    
+    // Get a reference to the contenteditable div where users will type.
+    const inputBox = document.getElementById('inputBox');
+    
+    // Initialize the image counter
+    let imageCounter = 0;
+
+    // Add an event listener for the input event, which triggers whenever the user types.
+    inputBox.addEventListener('input', () => {
+        // Get the current selection and range of the text.
+        const selection = window.getSelection();
+        const range = selection.getRangeAt(0);
+        // Capture the starting container and offset of the selection.
+        const startContainer = range.startContainer;
+        const startOffset = range.startOffset;
+
+        // Get the current HTML content of the input box.
+        const text = inputBox.innerHTML;
+        // Define a regex to match LaTeX expressions wrapped in $...$.
+        const latexRegex = /\$([^$]+)\$/g; // Regex to match LaTeX within $...$
+        
+        // Replace LaTeX expressions in the text with rendered images.
+        let updatedText = text.replace(latexRegex, (match, p1) => {
+            // Increment the image counter
+            imageCounter++;
+            // Create the image URL for the LaTeX expression.
+            const latexImage = `https://latex.codecogs.com/svg.latex?\\mathbf{${encodeURIComponent(p1)}}`;
+            // Return an HTML string for the image with a unique id
+            return `<img class="latex" id="image${imageCounter}" src="${latexImage}" alt="${p1}"/>`; // Use the image URL
+        });
+        
+        // Check if the updated text is different from the original text.
+        if (updatedText !== text) {
+            // Update the innerHTML of the input box with the new content.
+            inputBox.innerHTML = updatedText;
+
+            // Create a new range for the selection.
+            const newRange = document.createRange();
+            // Select the image with the highest counter (id)
+            const imgNode = document.getElementById(`image${imageCounter}`); // Get the most recently inserted image
+            
+            // If an image was found, position the cursor after it.
+            if (imgNode) {
+                // Set the start of the new range right after the image node.
+                newRange.setStartAfter(imgNode);
+                newRange.collapse(true); // Collapse the range to the end point (cursor position).
+                // Clear the current selection and set the new range.
+                selection.removeAllRanges();
+                selection.addRange(newRange);
+            }
+        }
+    });
+
 </script>
 
 </body>
